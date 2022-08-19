@@ -1,2 +1,2 @@
 
-docker build . -t paasup/httpd-custom:homepage
+docker build . -t paasup/poc:httpd-homepage

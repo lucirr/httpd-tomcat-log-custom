@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: sp-was
-        image: tomcat-custom:latest
+        image: paasup/poc:tomcat-custom-homepage
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
@@ -112,4 +112,3 @@ spec:
     - kbstar.paas.crossent.com
     secretName: kbstarplatform        
        
-        

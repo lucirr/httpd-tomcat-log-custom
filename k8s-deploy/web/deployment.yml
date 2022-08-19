@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: sp-web
-        image: httpd-custom:latest
+        image: paasup/poc:httpd-homepage
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
@@ -71,5 +71,3 @@ spec:
   - hosts:
     - kbstar.paas.crossent.com
     secretName: kbstarplatform       
-       
-        
