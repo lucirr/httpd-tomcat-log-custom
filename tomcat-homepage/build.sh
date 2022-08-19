@@ -1,2 +1,2 @@
 
-docker build . -t paasup/tomcat-custom:homepage
+docker build . -t paasup/poc:tomcat-custom-homepage
