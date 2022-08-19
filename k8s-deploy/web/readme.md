@@ -23,4 +23,3 @@ COPY ./static /usr/local/apache2/htdocs/static
 템플릿 고정값 
 - secret name : kbstarplatform 
 - was/tpl/pv.tpl : 192.168.0.50
-- was/tpl/Docker.tpl : 
