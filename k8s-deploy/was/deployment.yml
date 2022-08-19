@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sp-was
+  labels:
+    app: sp-was
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sp-was
+  template:
+    metadata:
+      labels:
+        app: sp-was
+    spec:
+      containers:
+      - name: sp-was
+        image: tomcat-custom:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        resources: {}
+        volumeMounts:
+        - mountPath: /storage
+          name: sp-was-upload
+        - mountPath: /usr/local/tomcat/logs
+          name: tomcat-logs          
+      imagePullSecrets:
+        - name: regcred
+      volumes:
+      - name: sp-was-upload
+        persistentVolumeClaim:
+          claimName: sp-was-upload-pvc
+      - hostPath:
+          path: /log/kbstar
+        name: tomcat-logs               
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sp-was
+  labels:
+      app: sp-was
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: sp-was
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sp-was
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: kbstar.paas.crossent.com
+    http:
+     paths:
+     - pathType: Prefix
+       path: "/"
+       backend:
+         service:
+           name: sp-was
+           port:
+             number: 8080  
+  tls:
+  - hosts:
+    - kbstar.paas.crossent.com
+    secretName: kbstarplatform        
+       
+        

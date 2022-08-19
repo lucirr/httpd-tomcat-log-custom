@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sp-web
+  labels:
+    app: sp-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sp-web
+  template:
+    metadata:
+      labels:
+        app: sp-web
+    spec:
+      containers:
+      - name: sp-web
+        image: httpd-custom:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        resources: {}
+        volumeMounts:
+        - mountPath: /usr/local/apache2/logs
+          name: httpd-logs          
+      imagePullSecrets:
+        - name: regcred
+      volumes:
+      - hostPath:
+          path: /log/kbstar
+        name: httpd-logs               
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sp-web
+  labels:
+      app: sp-web
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: sp-web
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sp-web
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: kbstar.paas.crossent.com
+    http:
+     paths:
+     - pathType: Prefix
+       path: "/"
+       backend:
+         service:
+           name: sp-web
+           port:
+             number: 8080  
+  tls:
+  - hosts:
+    - kbstar.paas.crossent.com
+    secretName: kbstarplatform       
+       
+        
