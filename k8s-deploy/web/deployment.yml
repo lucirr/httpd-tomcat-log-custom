@@ -21,7 +21,7 @@ spec:
         ports:
         - containerPort: 80
           name: http
-          protocol: TCP
+          protocol: TCP         
         resources: {}
         volumeMounts:
         - mountPath: /usr/local/apache2/logs
@@ -30,7 +30,7 @@ spec:
         - name: regcred
       volumes:
       - hostPath:
-          path: /log/kbstar
+          path: /log/kbstar/sp-web
         name: httpd-logs               
 
 ---

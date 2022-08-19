@@ -22,7 +22,42 @@ spec:
         - containerPort: 8080
           name: http
           protocol: TCP
-        resources: {}
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          # httpGet:
+          #   path: /homepage
+          #   port: 8080
+          #   scheme: HTTP
+          initialDelaySeconds: 30
+          failureThreshold: 3
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5           
+        readinessProbe:
+          tcpSocket:
+            port: 8080        
+          # httpGet:
+          #   path: /homepage
+          #   port: 8080
+          #   scheme: HTTP
+          initialDelaySeconds: 30
+          failureThreshold: 3
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5  
+        lifecycle:
+          preStop:
+            httpGet:
+              path: /homepage
+              port: http                    
+        resources:
+          limits:
+            cpu: 500m
+            memory: 1024Mi
+          requests:
+            cpu: 500m
+            memory: 1024M        
         volumeMounts:
         - mountPath: /storage
           name: sp-was-upload
@@ -35,7 +70,7 @@ spec:
         persistentVolumeClaim:
           claimName: sp-was-upload-pvc
       - hostPath:
-          path: /log/kbstar
+          path: /log/kbstar/sp-was
         name: tomcat-logs               
 
 ---
