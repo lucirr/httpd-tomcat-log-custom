@@ -14,4 +14,6 @@ RUN rm -Rf /usr/local/tomcat/webapps/examples
 RUN rm -Rf /usr/local/tomcat/webapps/host-manager
 RUN rm -Rf /usr/local/tomcat/webapps/manager
 
-COPY sp-homePage.war /usr/local/tomcat/webapps/homepage.war
+# Copy source war into webapp dir with context path name (ex. homepage.war)
+# 
+# COPY sp-homePage.war /usr/local/tomcat/webapps/homepage.war
