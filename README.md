@@ -1,12 +1,15 @@
 # httpd-tomcat-log-custom
 
+## 요구사항
+- k8s 에 실행되는 https, tomcat 로그를 hostpath 이용하여 호스트 볼륨에 생성
+- k8s 노드에 쌓이는 어플리케이션 로그 관리  
 
 ## 적용 내역
 - [x] : tomcat log 저장을 호스트(pod 명) 기준의 폴더 하위에 생성
 - [x] : httpd log  저장을 호스트(pod 명) 기준의 폴더 하위에 생성, 인덱스 disable
 - [x] : nginx 이용한 reverse proxy 생성 
 - [x] : k8s 배포 (deployment, hostpath log volume)
-- [x] : k8s 배포 노드 logratate
+- [x] : k8s 배포 노드 logratate 설정
 
 ## 환경 구성
 ```
