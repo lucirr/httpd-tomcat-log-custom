@@ -26,6 +26,6 @@ fi
 export LD_LIBRARY_PATH
 
 #SetEnv FOO_API_INSTANCE ${FOO_API_INSTANCE}
-#/usr/local/apache2/conf/env.sh
+/usr/local/apache2/bin/setenv.sh
 #
 

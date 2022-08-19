@@ -1,2 +1,2 @@
 
-docker build . -t paasup/tomcat-custom:9.0.26-jdk8-openjdk-slim
+docker build . -t paasup/tomcat-custom:9.0.65-jdk8

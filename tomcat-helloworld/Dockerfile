@@ -1,3 +1,3 @@
-FROM paasup/tomcat-custom:9.0.26-jdk8-openjdk-slim
+FROM paasup/tomcat-custom:9.0.65-jdk8
 
 COPY src/dist/helloworld.war /usr/local/tomcat/webapps/

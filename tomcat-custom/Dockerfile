@@ -1,4 +1,4 @@
-FROM tomcat:9.0.26-jdk8-openjdk-slim
+FROM tomcat:9.0.65-jdk8
 
 ENV TZ=Asia/Seoul
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
