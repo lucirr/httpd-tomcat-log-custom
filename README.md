@@ -33,10 +33,21 @@
 └── tomcat-homepage     홈페이지 예시 (tomcat)
 ```
 
-## 실행 예시
+## 실행 예시 (docker)
 ```
 $ docker ps | grep paasup
 25ab96db27dc   paasup/poc:nginx-custom-homepage    "/docker-entrypoint.…"   About a minute ago   Up About a minute                                               nginx
 1dec3b653151   paasup/poc:tomcat-custom-homepage   "catalina.sh run"        11 hours ago         Up 11 hours         0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   tomcat
 5719d93aaf67   paasup/poc:httpd-homepage           "httpd-foreground"       12 hours ago         Up 12 hours         0.0.0.0:8081->80/tcp, :::8081->80/tcp       httpd
+```
+
+## 실행 예시 (k8s)
+```
+# kubectl --kubeconfig web_kubeconfig.yaml get pod
+NAME                      READY   STATUS    RESTARTS   AGE
+sp-web-7bb6d7dfcf-2t798   1/1     Running   0          12h
+
+# kubectl --kubeconfig was_kubeconfig.yaml get pod
+NAME                               READY   STATUS    RESTARTS   AGE
+sp-was-757b6b59bd-jr7vx            1/1     Running   0          12h
 ```
