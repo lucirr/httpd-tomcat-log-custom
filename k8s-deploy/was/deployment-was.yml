@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sp-homepage
+  labels:
+    app: sp-homepage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sp-homepage
+  template:
+    metadata:
+      labels:
+        app: sp-homepage
+    spec:
+      containers:
+      - name: sp-homepage
+        image: localhost/sp-homepage-dev:1.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          # httpGet:
+          #   path: /homepage
+          #   port: 8080
+          #   scheme: HTTP
+          initialDelaySeconds: 30
+          failureThreshold: 3
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          # httpGet:
+          #   path: /homepage
+          #   port: 8080
+          #   scheme: HTTP
+          initialDelaySeconds: 30
+          failureThreshold: 3
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        # lifecycle:
+        #   preStop:
+        #     httpGet:
+        #       path: /homepage
+        #       port: http
+        resources:
+          limits:
+            cpu: 500m
+            memory: 1024Mi
+          requests:
+            cpu: 500m
+            memory: 1024M
+        volumeMounts:
+        #- mountPath: /storage
+        #  name: sp-homepage-upload
+        - mountPath: /usr/local/tomcat/logs
+          name: tomcat-logs
+      imagePullSecrets:
+        - name: regcred
+      volumes:
+      #- name: sp-homepage-upload
+      #  persistentVolumeClaim:
+      #    claimName: sp-homepage-upload-pvc
+      - hostPath:
+          path: /log/kbstar/sp-homepage
+        name: tomcat-logs
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sp-homepage
+  labels:
+      app: sp-homepage
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: sp-homepage
+
+
