@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kgq-web-home
+  labels:
+    app: kgq-web-home
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kgq-web-home
+  template:
+    metadata:
+      labels:
+        app: kgq-web-home
+    spec:
+      containers:
+      - name: kgq-web-home
+        image: localhost/kgq-web-home-dev:1.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        resources: {}
+        volumeMounts:
+        - mountPath: /usr/local/apache2/logs
+          name: httpd-logs
+      imagePullSecrets:
+        - name: regcred
+      volumes:
+      - hostPath:
+          path: /log/kbstar/kgq-web-home
+        name: httpd-logs
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kgq-web-home
+  labels:
+      app: kgq-web-home
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: kgq-web-home
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kgq-web-home
+  #annotations:
+  #  nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: kbstar.paas.crossent.com
+    http:
+     paths:
+     - pathType: Prefix
+       path: "/static/"
+       backend:
+         service:
+           name: kgq-web-home
+           port:
+             number: 8080
+     - pathType: Prefix
+       path: "/homepage/"
+       backend:
+         service:
+           name: sp-homepage
+           port:
+             number: 8080
